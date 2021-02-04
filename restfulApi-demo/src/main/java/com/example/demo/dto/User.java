@@ -1,8 +1,10 @@
 package com.example.demo.dto;
 
-
+import com.example.demo.validator.MyConstraint;
 import com.fasterxml.jackson.annotation.JsonView;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Past;
 import java.util.Date;
 
 public class User {
@@ -10,8 +12,11 @@ public class User {
     public interface UserSimpleView {};
     public interface UserDetailView extends UserSimpleView{};
     private String id;
+    @MyConstraint(message="test for constraint")
     private String username;
+    @NotBlank(message="password must not be blank")
     private String password;
+    @Past(message="birthday must be a past date")
     private Date birthday;
 
     @JsonView(UserSimpleView.class)

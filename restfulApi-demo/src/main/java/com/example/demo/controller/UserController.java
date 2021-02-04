@@ -5,8 +5,10 @@ import com.example.demo.dto.UserConditionQuery;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +35,24 @@ public class UserController {
     }
 
     @PostMapping
-    public User create(@RequestBody User user){
+    public User create(@RequestBody @Valid User user, BindingResult errors){
+        if(errors.hasErrors()){
+            errors.getAllErrors().stream().forEach(error -> System.out.println(error.getDefaultMessage()));
+        }
         user.setId("1");
         return user;
+    }
+
+    @PutMapping("/{id:\\d+}")
+    public User update(@RequestBody @Valid User user, BindingResult errors){
+        if(errors.hasErrors()){
+            errors.getAllErrors().stream().forEach(error -> System.out.println(error.getDefaultMessage()));
+        }
+        return user;
+    }
+
+    @DeleteMapping("/{id:\\d+}")
+    public void delete(@PathVariable String id){
+        System.out.println(id);
     }
 }
