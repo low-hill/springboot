@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.User;
 import com.example.demo.dto.UserConditionQuery;
+import com.example.demo.exception.UserNotExistException;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -29,9 +30,13 @@ public class UserController {
     @GetMapping("/{id:\\d+}")
     @JsonView(User.UserDetailView.class)
     public User getInfo(@PathVariable String id){
-        User user = new User();
-        user.setUsername("tom");
-        return user;
+        if("1".equals(id)){
+            User user = new User();
+            user.setUsername("tom");
+            return user;
+        }else{
+            throw new UserNotExistException(id);
+        }
     }
 
     @PostMapping
