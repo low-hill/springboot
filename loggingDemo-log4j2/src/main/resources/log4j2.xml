@@ -1,24 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration status="WARN">
     <Properties>
+        <property name="logFileDirectory">logs</property>
         <Property name="logFileName">store-api</Property>
     </Properties>
     <Appenders>
         <Console name="LogToConsole" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5p] [%X{sessionID}] %-5level %logger{36} - %msg%n"/>
         </Console>
-        <File name="LogToFile" fileName="logs/${logFileName}.log">
+        <RollingFile name="LogToFile"
+             fileName="${logFileDirectory}/${logFileName}.log"
+             filePattern="${logFileDirectory}/%d{yyyy-MM-dd}.log.zip">
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-20(%X{TXID})- %thread] %-5level %logger{36}.%M %4L - %msg%n"/>
-        </File>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+            </Policies>
+            <DefaultRolloverStrategy max="7" fileIndex="max" >
+                <Delete basePath = "${logFileDirectory}" maxDepth = "1">
+                <!-- 7일이 경과한 로그파일은 자동 삭제 -->
+                <IfLastModified age = "7d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
     </Appenders>
     <Loggers>
-<!--        <Logger name="com.example" additivity="true">-->
-<!--            <AppenderRef ref="LogToFile" level="warn"/>-->
-<!--            <AppenderRef ref="LogToConsole" level="info"/>-->
-<!--        </Logger>-->
-        <Logger name="com.example" level="debug" additivity="false">
-            <AppenderRef ref="LogToFile"/>
-            <AppenderRef ref="LogToConsole"/>
+        <Logger name="com.example" additivity="true">
+            <AppenderRef ref="LogToFile" level="warn"/>
+            <AppenderRef ref="LogToConsole" level="info"/>
         </Logger>
         <Logger name="org.springframework.boot" level="error" additivity="false">
             <AppenderRef ref="LogToConsole"/>
