@@ -2,7 +2,7 @@
 <configuration status="WARN">
     <Properties>
         <property name="logFileDirectory">logs</property>
-        <Property name="logFileName">store-api</Property>
+        <Property name="logFileName">log4j2-demo</Property>
     </Properties>
     <Appenders>
         <Console name="LogToConsole" target="SYSTEM_OUT">
@@ -11,15 +11,9 @@
         <File name="LogToFile" fileName="logs/${logFileName}.log">
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-20(%X{TXID})- %thread] %-5level %logger{36}.%M %4L - %msg%n"/>
         </File>
-    </Appenders>
-    <Loggers>
-<!--        <Logger name="com.example" additivity="true">-->
-<!--            <AppenderRef ref="LogToFile" level="warn"/>-->
-<!--            <AppenderRef ref="LogToConsole" level="info"/>-->
-<!--        </Logger>-->
         <RollingFile name="LogToFile"
                      fileName="${logFileDirectory}/${logFileName}.log"
-                     filePattern="${logFileDirectory}/%d{yyyy-MM-dd}.log.tar">
+                     filePattern="${logFileDirectory}/%d{yyyy-MM-dd}.log.gz">
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-20(%X{TXID})- %thread] %-5level %logger{36}.%M %4L - %msg%n"/>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1"/>
@@ -31,6 +25,8 @@
                 </Delete>
             </DefaultRolloverStrategy>
         </RollingFile>
+    </Appenders>
+    <Loggers>
         <Logger name="com.example" level="debug" additivity="false">
             <AppenderRef ref="LogToFile"/>
             <AppenderRef ref="LogToConsole"/>
