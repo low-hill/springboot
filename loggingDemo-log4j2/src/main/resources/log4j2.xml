@@ -2,7 +2,7 @@
 <configuration status="WARN">
     <Properties>
         <property name="logFileDirectory">logs</property>
-        <Property name="logFileName">store-api</Property>
+        <Property name="logFileName">log4j-demo</Property>
     </Properties>
     <Appenders>
         <Console name="LogToConsole" target="SYSTEM_OUT">
@@ -19,7 +19,7 @@
 <!--        </Logger>-->
         <RollingFile name="LogToFile"
                      fileName="${logFileDirectory}/${logFileName}.log"
-                     filePattern="${logFileDirectory}/%d{yyyy-MM-dd}.log.tar">
+                     filePattern="${logFileDirectory}/%d{yyyy-MM-dd}.gz">
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-20(%X{TXID})- %thread] %-5level %logger{36}.%M %4L - %msg%n"/>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1"/>
